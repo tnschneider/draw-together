@@ -2,6 +2,8 @@ import throttle from "../utils/throttle";
 import DrawingCanvas from "./DrawingCanvas";
 import BaseCanvas from "./BaseCanvas";
 import SocketIo from 'socket.io-client';
+import ColorPicker from "./ColorPicker";
+import ThicknessPicker from "./ThicknessPicker";
 
 export default class DrawingBoard {
     constructor(anchor) {
@@ -12,6 +14,8 @@ export default class DrawingBoard {
             : this.anchorEl = anchor;
 
         this.baseCanvas = new BaseCanvas(this.anchorEl);
+        this.colorPicker = new ColorPicker(this.anchorEl);
+        this.thicknessPicker = new ThicknessPicker(this.anchorEl);
 
         this.drawingCanvas = null;
 
@@ -39,16 +43,15 @@ export default class DrawingBoard {
             this.baseCanvas.apply(lines);
         })
         this.socket.emit('setRoom', 'theRoom');
-        
     }
 
     startDrawing(point) {
         this.isDrawing = true;
-        this.drawingCanvas = new DrawingCanvas(this.anchorEl, point);
+        this.drawingCanvas = new DrawingCanvas(this.anchorEl, this.normalize(point), this.colorPicker.color, this.thicknessPicker.thickness);
     }
 
     draw(point) {
-        this.drawingCanvas.draw(point);
+        this.drawingCanvas.draw(this.normalize(point));
     }
 
     async stopDrawing() {
@@ -58,5 +61,12 @@ export default class DrawingBoard {
         this.allLines.push(line);
         this.drawingCanvas = null;
         this.isDrawing = false;
+    }
+
+    normalize(point) {
+        return {
+            x: point.x - this.baseCanvas.left,
+            y: point.y - this.baseCanvas.top
+        }
     }
 }

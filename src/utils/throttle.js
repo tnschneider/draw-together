@@ -5,10 +5,7 @@ export default function throttle (type, name, obj) {
         if (running) { return; }
         running = true;
         setTimeout(function () {
-            obj.dispatchEvent(new MouseEvent(name, {
-                clientX: e.clientX,
-                clientY: e.clientY,
-            }));
+            obj.dispatchEvent(new MouseEvent(name, e));
             running = false;
         }, 10);
     };

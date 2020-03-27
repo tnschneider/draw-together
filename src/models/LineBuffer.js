@@ -1,10 +1,14 @@
 import Line from "./Line";
 
 export default class LineBuffer {
-    constructor(ctx) {
+    constructor(ctx, color, thickness) {
         this.ctx = ctx;
+        this.ctx.strokeStyle = color;
+        this.ctx.lineWidth = thickness;
+        this.ctx.lineCap = 'round';
+        this.ctx.beginPath();
         this.buf = [];
-        this.currentLine = new Line();
+        this.currentLine = new Line(color, thickness);
     }
 
     push (point) {

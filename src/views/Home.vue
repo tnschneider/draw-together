@@ -1,5 +1,7 @@
 <template>
-  <div id="board" style="height: 100%; width: 100%;"></div>
+  <div class="container">
+    <div id="board" class="board"></div>  
+  </div>
 </template>
 
 <script>
@@ -12,3 +14,16 @@ export default {
   }
 }
 </script>
+<style>
+  .container {
+    display: flex; 
+    flex: 1; 
+    justify-content: center; 
+    align-items: center;
+  }
+  .board {
+    height: 700px;
+    width: 1000px;
+    position: relative;
+  }
+</style>

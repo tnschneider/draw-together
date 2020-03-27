@@ -1,19 +1,12 @@
 import LineBuffer from "./LineBuffer";
 
 export default class DrawingCanvas {
-    constructor(anchorEl, point) {
+    constructor(anchorEl, point, color, thickness) {
         this.anchorEl = anchorEl;
 
         this.canvas = this.createDrawingCanvas();
 
-        this.ctx = this.canvas.getContext('2d');
-        this.ctx.lineWidth = 5;
-        this.ctx.lineCap = 'round';
-        this.ctx.strokeStyle = '#c0392b';
-
-        this.ctx.beginPath();
-
-        this.lineBuffer = new LineBuffer(this.ctx);
+        this.lineBuffer = new LineBuffer(this.canvas.getContext('2d'), color, thickness);
 
         this.draw(point);
     }
@@ -30,7 +23,7 @@ export default class DrawingCanvas {
 
     createDrawingCanvas() {
         let canvas = document.createElement('canvas');
-        canvas.style.position = 'fixed';
+        canvas.style.position = 'absolute';
         canvas.style.top = 0;
         canvas.style.left = 0;
         canvas.width = 1000;

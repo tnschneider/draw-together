@@ -3,8 +3,13 @@ var app = require('express')();
 var http = require('http').createServer(app);
 var io = require('socket.io')(http);
 var serveStatic = require('serve-static');
+var proxy = require('express-http-proxy');
 
-app.use(serveStatic(path.join(__dirname, '..', 'dist')));
+if (process.env.NODE_ENV == 'production') {
+    app.use(serveStatic(path.join(__dirname, '..', 'dist')));
+} else {
+    app.use('/', proxy('http://localhost:8888'));
+}
 
 var roomLines = {};
 var roomConnections = {};
